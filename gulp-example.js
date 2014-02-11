@@ -2,7 +2,9 @@
  * Dependencies
  *
  * INSTALL:
- * $npm install gulp, gulp-less, gulp-autoprefixer, gulp-minify-css, gulp-jshint, gulp-imagemin, gulp-rename, gulp-clean, gulp-concat, gulp-notify, gulp-cache, gulp-livereload, tiny-lr --savedev
+ * you must install it globally *and* locally:
+ * $ npm install gulp -g
+ * $ npm install gulp, gulp-less, gulp-autoprefixer, gulp-minify-css, gulp-jshint, gulp-imagemin, gulp-rename, gulp-clean, gulp-concat, gulp-notify, gulp-cache, gulp-livereload, gulp-nodemon --savedev
  *
  * INFO:
  * http://markgoodyear.com/2014/01/getting-started-with-gulp/
@@ -11,21 +13,21 @@
  *
  */
 
-var gulp = require('gulp'),
-    less = require('gulp-less'),
-    autoprefixer = require('gulp-autoprefixer'),
-    minifycss = require('gulp-minify-css'),
-    jshint = require('gulp-jshint'),
-    uglify = require('gulp-uglify'),
-    imagemin = require('gulp-imagemin'),
-    rename = require('gulp-rename'),
-    clean = require('gulp-clean'),
-    concat = require('gulp-concat'),
-    notify = require('gulp-notify'),
-    cache = require('gulp-cache'),
-    livereload = require('gulp-livereload'),
-    lr = require('tiny-lr'),
-    server = lr();
+var gulp          = require('gulp');
+var less          = require('gulp-less');
+var autoprefixer  = require('gulp-autoprefixer');
+var minifycss     = require('gulp-minify-css');
+var jshint        = require('gulp-jshint');
+var uglify        = require('gulp-uglify');
+var imagemin      = require('gulp-imagemin');
+var rename        = require('gulp-rename');
+var clean         = require('gulp-clean');
+var concat        = require('gulp-concat');
+// Send messages to Mac Notification Center or Linux notifications
+var notify        = require('gulp-notify');  // DOES NOT WORK ON WINDOWS
+var cache         = require('gulp-cache');
+var livereload    = require('gulp-livereload');
+var nodemon       = require('gulp-nodemon');
 
 /**
  * Process CSS
@@ -43,6 +45,7 @@ var lessFiles = [
 
 gulp.task('styles', function() {          // Styles processing
   return gulp.src(lessFiles)              // Read Less files
+//^^^^^^ - This is the key here, to make sure tasks run asynchronously!
     .pipe(less({}))                       // Compile Less files
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
     .pipe(gulp.dest('./public/layouts'))  // Save CSS here
